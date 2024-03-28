@@ -11,13 +11,15 @@ function App() {
       <div className="bg-slate-200">
         {/* navbar */}
         <div className="flex justify-between items-center p-10">
-          <h1>Reservation</h1>
-          <h1>Button</h1>
+          <h1 className="font-bold text-2xl">Reservation</h1>
+          <button className="border rounded-md bg-blue-500 py-2 px-2 text-white font-md hover:bg-black">
+            Print / Download
+          </button>
         </div>
         {/* Form Section */}
         <div className="flex">
           <div className="flex-grow">
-            <div className="grid p-3 gap-10">
+            <div className="grid px-5 gap-10">
               <div className="grid gap-5 rounded-md border-solid border-2 border-indigo-200 p-5">
                 <h2>Reservation Details</h2>
                 <ReservationDetailsForm />
