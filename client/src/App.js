@@ -7,10 +7,10 @@ import "./index.css";
 
 function App() {
   return (
-    <div className="p-20 ">
+    <div className="p-20">
       <div className="bg-slate-200">
         {/* navbar */}
-        <div className="flex justify-between items-center p-10">
+        <div className="flex justify-between items-center py-10 px-5">
           <h1 className="font-bold text-2xl">Reservation</h1>
           <button className="border rounded-md bg-blue-500 py-2 px-2 text-white font-md hover:bg-black">
             Print / Download
@@ -19,32 +19,42 @@ function App() {
         {/* Form Section */}
         <div className="flex">
           <div className="flex-grow">
-            <div className="grid px-5 gap-10">
+            <div className="grid px-5 gap-6">
+              <h2 className="font-bold border-b-2 border-indigo-200 pb-1">
+                Reservation Details
+              </h2>
               <div className="grid gap-5 rounded-md border-solid border-2 border-indigo-200 p-5">
-                <h2>Reservation Details</h2>
                 <ReservationDetailsForm />
               </div>
-              <div className="grid gap-5 rounded-md border-solid border-2 border-indigo-200 p-5">
-                <h2>Vehicle Information</h2>
+              <h2 className="font-bold border-b-2 border-indigo-200 pb-1">
+                Vehicle Information
+              </h2>
+              <div className="grid gap-5 rounded-md border-solid border-2 border-indigo-200 p-5 mb-10">
                 <VehicleInformation />
               </div>
             </div>
           </div>
           <div className="flex-grow">
-            <div className="grid gap-10">
+            <div className="grid gap-6">
+              <h2 className="font-bold border-b-2 border-indigo-200 pb-1">
+                Customer Information
+              </h2>
               <div className="grid gap-5 rounded-md border-solid border-2 border-indigo-200 p-5">
-                <h2>Customer Details</h2>
                 <CustomerDetails />
               </div>
+              <h2 className="font-bold border-b-2 border-indigo-200 pb-1">
+                Additional Charges
+              </h2>
               <div className="grid gap-5 rounded-md border-solid border-2 border-indigo-200 p-5">
-                <h2>Additional Charges.</h2>
                 <AdditionalCharges />
               </div>
             </div>
           </div>
           <div className="flex-grow">
-            <div className="gap-10 rounded-md border-solid border-2 border-indigo-200 p-5">
-              <h2>Charges Summary</h2>
+            <h2 className="font-bold border-b-2 border-indigo-200 pb-1">
+              Charges Summary
+            </h2>
+            <div className=" rounded-md border-solid border-2 border-indigo-200 p-5 mt-10">
               <ChargesSummary />
             </div>
           </div>
