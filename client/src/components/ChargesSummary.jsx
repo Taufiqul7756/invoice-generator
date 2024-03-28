@@ -1,5 +1,3 @@
-// ChargesSummary.js
-
 import React, { useState, useEffect } from "react";
 
 const ChargesSummary = ({
@@ -41,10 +39,45 @@ const ChargesSummary = ({
   }, [rentalDuration, selectedCarRates, additionalCharges]);
 
   return (
-    <div>
-      <div className="mt-4">
-        <p className="text-lg font-semibold">Total Charges: ${totalCharges}</p>
-      </div>
+    <div className="mt-4">
+      <table className="table-auto w-full">
+        <thead>
+          <tr>
+            <th className="px-4 py-2">Charges</th>
+            <th className="px-4 py-2">Unit</th>
+            <th className="px-4 py-2">Rate</th>
+            <th className="px-4 py-2">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {/* Render rows for charges */}
+          {/* Example row for rental charges */}
+          <tr>
+            <td className="border px-4 py-2">Rental Charges</td>
+            <td className="border px-4 py-2">{rentalDuration} hours</td>
+            <td className="border px-4 py-2">${selectedCarRates?.hourly}</td>
+            <td className="border px-4 py-2">
+              ${(selectedCarRates?.hourly * rentalDuration).toFixed(2)}
+            </td>
+          </tr>
+          {/* Example row for additional charges */}
+          <tr>
+            <td className="border px-4 py-2">Collision Damage Waiver</td>
+            <td className="border px-4 py-2">1 time</td>
+            <td className="border px-4 py-2">$9.00</td>
+            <td className="border px-4 py-2">
+              ${additionalCharges?.collisionDamageWaiver ? "9.00" : "0.00"}
+            </td>
+          </tr>
+          {/* Render row for total charges */}
+          <tr className="font-semibold">
+            <td className="border px-4 py-2">Total Charges</td>
+            <td className="border px-4 py-2"></td>
+            <td className="border px-4 py-2"></td>
+            <td className="border px-4 py-2">${totalCharges}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 };

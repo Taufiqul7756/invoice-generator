@@ -7,8 +7,8 @@ import "./index.css";
 
 function App() {
   return (
-    <div className="p-20">
-      <div className="bg-slate-200">
+    <div className="p-20 bg-slate-200">
+      <div className="bg-white">
         {/* navbar */}
         <div className="flex justify-between items-center py-10 px-5">
           <h1 className="font-bold text-2xl">Reservation</h1>
@@ -50,11 +50,11 @@ function App() {
               </div>
             </div>
           </div>
-          <div className="flex-grow">
+          <div className="flex-grow ml-5">
             <h2 className="font-bold border-b-2 border-indigo-200 pb-1">
               Charges Summary
             </h2>
-            <div className=" rounded-md border-solid border-2 border-indigo-200 p-5 mt-10">
+            <div className=" rounded-md border-solid border-2 border-indigo-200 p-5 mt-6">
               <ChargesSummary />
             </div>
           </div>
