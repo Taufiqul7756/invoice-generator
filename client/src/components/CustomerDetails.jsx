@@ -1,5 +1,4 @@
-// CustomerDetails.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const CustomerDetails = ({ onInputChange }) => {
   const [formData, setFormData] = useState({
@@ -9,7 +8,19 @@ const CustomerDetails = ({ onInputChange }) => {
     phone: "",
   });
 
-  // console.log("formData form customer details child:", formData);
+  const [allFieldsFilled, setAllFieldsFilled] = useState(false);
+  const [timerId, setTimerId] = useState(null);
+
+  useEffect(() => {
+    // Check if all fields are filled
+    const filled =
+      formData.firstName &&
+      formData.lastName &&
+      formData.email &&
+      formData.phone;
+
+    setAllFieldsFilled(filled);
+  }, [formData]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -17,8 +28,39 @@ const CustomerDetails = ({ onInputChange }) => {
       ...formData,
       [name]: value,
     });
-    // Sending updated data to parent component
-    onInputChange(formData);
+
+    // Clear previous timer
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+
+    // Set a new timer to trigger the post request
+    const newTimerId = setTimeout(() => {
+      if (allFieldsFilled && formData.phone) {
+        postData();
+      }
+    }, 3000);
+
+    setTimerId(newTimerId);
+  };
+
+  const postData = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        console.log("User data saved successfully");
+      } else {
+        console.error("Failed to save user data");
+      }
+    } catch (error) {
+      console.error("Error saving user data:", error);
+    }
   };
 
   return (
@@ -37,6 +79,7 @@ const CustomerDetails = ({ onInputChange }) => {
             onChange={handleInputChange}
             className="mt-1 p-2 border w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
             placeholder="Enter first name"
+            required
           />
         </div>
         {/* Last Name */}
@@ -52,6 +95,7 @@ const CustomerDetails = ({ onInputChange }) => {
             onChange={handleInputChange}
             className="mt-1 p-2 border w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
             placeholder="Enter last name"
+            required
           />
         </div>
         {/* Email */}
@@ -67,6 +111,7 @@ const CustomerDetails = ({ onInputChange }) => {
             onChange={handleInputChange}
             className="mt-1 p-2 border w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
             placeholder="Enter email"
+            required
           />
         </div>
         {/* Phone */}
@@ -82,6 +127,7 @@ const CustomerDetails = ({ onInputChange }) => {
             onChange={handleInputChange}
             className="mt-1 p-2 border w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
             placeholder="Enter phone number"
+            required
           />
         </div>
       </div>
