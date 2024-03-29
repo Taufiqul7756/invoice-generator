@@ -54,6 +54,12 @@ const CustomerDetails = ({ onInputChange }) => {
         body: JSON.stringify(formData),
       });
       if (response.ok) {
+        const responseData = await response.json();
+        const { token } = responseData;
+        console.log("token in client:", token);
+        if (token) {
+          localStorage.setItem("token", token);
+        }
         console.log("User data saved successfully");
       } else {
         console.error("Failed to save user data");
