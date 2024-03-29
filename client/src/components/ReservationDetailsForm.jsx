@@ -1,6 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 
 const ReservationDetailsForm = () => {
+  const [pickupDate, setPickupDate] = useState("");
+  const [returnDate, setReturnDate] = useState("");
+  const [duration, setDuration] = useState("");
+
+  // Function to handle changes in the pickup date input
+  const handlePickupDateChange = (event) => {
+    setPickupDate(event.target.value);
+    updateDuration(event.target.value, returnDate);
+  };
+
+  // Function to handle changes in the return date input
+  const handleReturnDateChange = (event) => {
+    setReturnDate(event.target.value);
+    updateDuration(pickupDate, event.target.value);
+  };
+
+  const updateDuration = (pickupDate, returnDate) => {
+    if (pickupDate && returnDate) {
+      const pickup = new Date(pickupDate);
+      const returnD = new Date(returnDate);
+      const timeDifference = Math.abs(returnD.getTime() - pickup.getTime());
+      const durationInDays = Math.ceil(timeDifference / (1000 * 3600 * 24));
+      const weeks = Math.floor(durationInDays / 7);
+      const remainingDays = durationInDays % 7;
+      setDuration(
+        `${weeks > 0 ? weeks + " week" + (weeks > 1 ? "s" : "") : ""} ${
+          remainingDays > 0
+            ? remainingDays + " day" + (remainingDays > 1 ? "s" : "")
+            : ""
+        }`
+      );
+    }
+  };
   return (
     <div className="">
       <div className="flex flex-col space-y-4 ">
@@ -22,42 +55,47 @@ const ReservationDetailsForm = () => {
         </div>
         {/* Pickup Date */}
         <div>
-          <label htmlFor="pickupDate" className="block text-sm font-medium ">
+          <label htmlFor="pickupDate" className="block text-sm font-medium">
             Pickup Date <span className="text-red-500">*</span>
           </label>
           <input
             type="date"
             id="pickupDate"
             name="pickupDate"
+            value={pickupDate}
+            onChange={handlePickupDateChange}
             className="mt-1 p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-200"
           />
         </div>
+
         {/* Return Date */}
         <div>
-          <label htmlFor="returnDate" className="block text-sm font-medium ">
+          <label htmlFor="returnDate" className="block text-sm font-medium">
             Return Date <span className="text-red-500">*</span>
           </label>
           <input
             type="date"
             id="returnDate"
             name="returnDate"
+            value={returnDate}
+            onChange={handleReturnDateChange}
             className="mt-1 p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-200"
           />
         </div>
+
         {/* Duration */}
+
         <div>
-          <label
-            htmlFor="duration"
-            className="block text-sm font-medium text-gray-700"
-          >
+          <label htmlFor="duration" className="block text-sm font-medium">
             Duration
           </label>
           <input
-            type="number"
+            type="text"
             id="duration"
             name="duration"
+            value={duration}
+            readOnly
             className="mt-1 p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-200"
-            placeholder="Enter duration in hours"
           />
         </div>
         {/* Discount */}
