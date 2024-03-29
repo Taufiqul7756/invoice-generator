@@ -13,7 +13,6 @@ function App() {
   console.log("carsList:", carsList);
 
   useEffect(() => {
-    // Fetch data from the cars list endpoint
     fetch("https://exam-server-7c41747804bf.herokuapp.com/carsList")
       .then((response) => response.json())
       .then((data) => {

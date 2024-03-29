@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 
 const VehicleInformation = ({ carsList }) => {
-  console.log("carsList from Vehicle info compo:", carsList);
-  const vehicleTypes = [...new Set(carsList.map((car) => car.type))];
-  const vehicleModels = [...new Set(carsList.map((car) => car.model))];
+  const [selectedType, setSelectedType] = useState("");
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
+
+  // Update filtered vehicles when the selected type changes
+  React.useEffect(() => {
+    if (selectedType) {
+      const filtered = carsList.filter((car) => car.type === selectedType);
+      setFilteredVehicles(filtered);
+    } else {
+      setFilteredVehicles([]);
+    }
+  }, [selectedType, carsList]);
+
+  // Get unique vehicle types
+  const uniqueTypes = [...new Set(carsList.map((car) => car.type))];
 
   return (
     <div>
@@ -17,9 +29,11 @@ const VehicleInformation = ({ carsList }) => {
             id="vehicleType"
             name="vehicleType"
             className="mt-1 p-2 border w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
+            onChange={(e) => setSelectedType(e.target.value)}
+            value={selectedType}
           >
             <option value="">Select vehicle type</option>
-            {vehicleTypes.map((type, index) => (
+            {uniqueTypes.map((type, index) => (
               <option key={index} value={type}>
                 {type}
               </option>
@@ -37,9 +51,9 @@ const VehicleInformation = ({ carsList }) => {
             className="mt-1 p-2 border w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
           >
             <option value="">Select vehicle</option>
-            {vehicleModels.map((model, index) => (
-              <option key={index} value={model}>
-                {model}
+            {filteredVehicles.map((car, index) => (
+              <option key={index} value={car.model}>
+                {car.model}
               </option>
             ))}
           </select>
