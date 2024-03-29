@@ -1,11 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-//Schema Data
+
+// Schema Data
 const schemaData = mongoose.Schema(
   {
     firstName: String,
@@ -14,7 +16,7 @@ const schemaData = mongoose.Schema(
     phone: Number,
   },
   {
-    timeStamps: true,
+    timestamps: true,
   }
 );
 
@@ -26,10 +28,24 @@ app.get("/getUser", async (req, res) => {
 });
 
 app.post("/user", async (req, res) => {
-  console.log(req.body);
-  const data = new userModel(req.body);
-  await data.save();
-  res.send({ success: true, message: "Data save successfully" });
+  try {
+    const userData = req.body;
+    const data = new userModel(userData);
+    await data.save();
+
+    // Generate JWT token
+    const token = jwt.sign({ user: userData }, "invoice-jwt-key");
+    console.log("token for currentUser:", token);
+
+    res.send({
+      success: true,
+      message: "Data saved successfully",
+      token: token,
+    });
+  } catch (error) {
+    console.error("Error saving user data:", error);
+    res.status(500).json({ success: false, message: "Error saving user data" });
+  }
 });
 
 mongoose
@@ -37,9 +53,9 @@ mongoose
     "mongodb+srv://taufiq:taufiq@cluster0.1xwhljj.mongodb.net/invoice-generator"
   )
   .then(() => {
-    console.log(" connect to DB");
+    console.log("Connected to DB");
     app.listen(5000, () => {
-      console.log("Server is running at port 3000");
+      console.log("Server is running at port 5000");
     });
   })
   .catch((err) => console.log(err));
