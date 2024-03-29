@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const ChargesSummary = ({
   customerData,
@@ -9,12 +10,10 @@ const ChargesSummary = ({
   selectedVehicleId,
   carsList,
 }) => {
-  // State variables to store calculated charges
   const [dailyCharge, setDailyCharge] = useState(0);
   const [weeklyCharge, setWeeklyCharge] = useState(0);
   const [totalCharges, setTotalCharges] = useState(0);
 
-  // useEffect to update charges whenever selectedVehicleId changes
   useEffect(() => {
     if (selectedVehicleId && carsList) {
       const vehicle = carsList.find((car) => car.id === selectedVehicleId);
@@ -25,11 +24,8 @@ const ChargesSummary = ({
     }
   }, [selectedVehicleId, carsList]);
 
-  // Parse reservationDuration string to extract weeks and days using regex
   const regex = /(\d+)\s+weeks?\s*(\d+)\s+days?/;
   const match = reservationDuration.match(regex);
-
-  console.log("matchmatchmatchmatch", match);
 
   let weeks = 0;
   let days = 0;
@@ -38,7 +34,6 @@ const ChargesSummary = ({
     days = parseInt(match[2]) || 0;
   }
 
-  // Calculate total charges
   const totalDaily = dailyCharge * days;
   const totalWeekly = weeklyCharge * weeks;
   const total = totalDaily + totalWeekly;
@@ -47,7 +42,6 @@ const ChargesSummary = ({
     setTotalCharges(total);
   }, [total]);
 
-  // Prepare the data object to be sent to the database
   const dataToSend = {
     reservationDuration,
     additionalCharges,
