@@ -30,7 +30,7 @@ function App() {
   // console.log("selectedVehicleId from app.js :", selectedVehicleId);
   // console.log("additionalCharges from App.js:", additionalCharges);
   // console.log("customerData from App.js:", customerData);
-  console.log("reservationDuration from App.js: ", reservationDuration);
+  // console.log("reservationDuration from App.js: ", reservationDuration);
   // console.log("child2 from App.js: ", selectedVehicleType, filteredVehicles);
 
   useEffect(() => {

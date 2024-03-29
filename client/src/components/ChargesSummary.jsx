@@ -9,10 +9,12 @@ const ChargesSummary = ({
   selectedVehicleId,
   carsList,
 }) => {
-  console.log(
-    "reservationDurationreservationDurationreservationDuration",
-    reservationDuration
-  );
+  console.log("reservationDuration Check:", reservationDuration);
+  console.log("selectedVehicleType Check:", selectedVehicleType);
+  console.log("filteredVehicles Check:", filteredVehicles);
+  console.log("additionalCharges Check:", additionalCharges);
+  console.log("customerData Check:", customerData);
+  console.log("selectedVehicleId Check:", selectedVehicleId);
   // State variables to store calculated charges
   const [dailyCharge, setDailyCharge] = useState(0);
   const [weeklyCharge, setWeeklyCharge] = useState(0);

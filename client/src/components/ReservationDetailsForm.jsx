@@ -5,7 +5,7 @@ const ReservationDetailsForm = ({ onDurationChange }) => {
   const [returnDate, setReturnDate] = useState("");
   const [duration, setDuration] = useState("");
 
-  console.log("duration from child", duration);
+  // console.log("duration from child", duration);
 
   // Function to handle changes in the pickup date input
   const handlePickupDateChange = (event) => {
