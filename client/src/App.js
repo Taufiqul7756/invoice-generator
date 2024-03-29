@@ -12,8 +12,15 @@ function App() {
   const [reservationDuration, setReservationDuration] = useState("");
 
   const [selectedVehicleType, setSelectedVehicleType] = useState(""); // State to store selected vehicle type
-  const [filteredVehicles, setFilteredVehicles] = useState([]); //
+  const [filteredVehicles, setFilteredVehicles] = useState([]);
 
+  const [customerData, setCustomerData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+  });
+  console.log("customerData from App.js:", customerData);
   console.log("reservationDuration from App.js: ", reservationDuration);
   console.log("child2 from App.js: ", selectedVehicleType, filteredVehicles);
 
@@ -40,6 +47,10 @@ function App() {
   const handleVehicleSelection = (type, vehicles) => {
     setSelectedVehicleType(type);
     setFilteredVehicles(vehicles);
+  };
+
+  const handleInputChange = (data) => {
+    setCustomerData(data);
   };
   return (
     <div className="lg:p-16 sm:p-5 md:p-5 bg-slate-200">
@@ -82,7 +93,7 @@ function App() {
                 Customer Information
               </h2>
               <div className="grid gap-4 rounded-md border-solid border-2 border-indigo-200 p-4">
-                <CustomerDetails />
+                <CustomerDetails onInputChange={handleInputChange} />
               </div>
               <h2 className="font-bold border-b-2 border-indigo-200 pb-2">
                 Additional Charges

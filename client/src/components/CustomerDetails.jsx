@@ -1,8 +1,26 @@
 // CustomerDetails.js
+import React, { useState } from "react";
 
-import React from "react";
+const CustomerDetails = ({ onInputChange }) => {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+  });
 
-const CustomerDetails = () => {
+  console.log("formData form customer details child:", formData);
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+    // Sending updated data to parent component
+    onInputChange(formData);
+  };
+
   return (
     <div>
       <div className="flex flex-col space-y-4">
@@ -15,6 +33,8 @@ const CustomerDetails = () => {
             type="text"
             id="firstName"
             name="firstName"
+            value={formData.firstName}
+            onChange={handleInputChange}
             className="mt-1 p-2 border w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
             placeholder="Enter first name"
           />
@@ -28,6 +48,8 @@ const CustomerDetails = () => {
             type="text"
             id="lastName"
             name="lastName"
+            value={formData.lastName}
+            onChange={handleInputChange}
             className="mt-1 p-2 border w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
             placeholder="Enter last name"
           />
@@ -41,6 +63,8 @@ const CustomerDetails = () => {
             type="email"
             id="email"
             name="email"
+            value={formData.email}
+            onChange={handleInputChange}
             className="mt-1 p-2 border w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
             placeholder="Enter email"
           />
@@ -54,6 +78,8 @@ const CustomerDetails = () => {
             type="tel"
             id="phone"
             name="phone"
+            value={formData.phone}
+            onChange={handleInputChange}
             className="mt-1 p-2 border w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
             placeholder="Enter phone number"
           />
