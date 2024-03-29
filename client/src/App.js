@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import AdditionalCharges from "./components/AdditionalCharges";
 import ChargesSummary from "./components/ChargesSummary";
 import CustomerDetails from "./components/CustomerDetails";
@@ -6,6 +7,24 @@ import VehicleInformation from "./components/VehicleInformation";
 import "./index.css";
 
 function App() {
+  const [carsList, setCarsList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  console.log("carsList:", carsList);
+
+  useEffect(() => {
+    // Fetch data from the cars list endpoint
+    fetch("https://exam-server-7c41747804bf.herokuapp.com/carsList")
+      .then((response) => response.json())
+      .then((data) => {
+        setCarsList(data.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching cars list:", error);
+        setLoading(false);
+      });
+  }, []);
   return (
     <div className="lg:p-20 sm:p-5 md:p-5 bg-slate-200">
       <div className="bg-white">
@@ -31,7 +50,7 @@ function App() {
                 Vehicle Information
               </h2>
               <div className="grid gap-4 rounded-md border-solid border-2 border-indigo-200 p-4">
-                <VehicleInformation />
+                <VehicleInformation carsList={carsList} />
               </div>
             </div>
           </div>

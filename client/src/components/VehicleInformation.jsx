@@ -1,27 +1,9 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
 
-const VehicleInformation = () => {
-  const [carData, setCarData] = useState([]);
-  const [selectedMake, setSelectedMake] = useState("");
-  const [selectedType, setSelectedType] = useState("");
-  const [filteredCars, setFilteredCars] = useState([]);
-
-  console.log("carData:", carData);
-  // Fetch car data from API
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "https://exam-server-7c41747804bf.herokuapp.com/carsList"
-        );
-        setCarData(response.data.data);
-      } catch (error) {
-        console.error("Error fetching car data:", error);
-      }
-    };
-    fetchData();
-  }, []);
+const VehicleInformation = ({ carsList }) => {
+  console.log("carsList from Vehicle info compo:", carsList);
+  const vehicleTypes = [...new Set(carsList.map((car) => car.type))];
+  const vehicleModels = [...new Set(carsList.map((car) => car.model))];
 
   return (
     <div>
@@ -37,7 +19,11 @@ const VehicleInformation = () => {
             className="mt-1 p-2 border w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
           >
             <option value="">Select vehicle type</option>
-            {/* Add options for vehicle types */}
+            {vehicleTypes.map((type, index) => (
+              <option key={index} value={type}>
+                {type}
+              </option>
+            ))}
           </select>
         </div>
         {/* Vehicle */}
@@ -51,7 +37,11 @@ const VehicleInformation = () => {
             className="mt-1 p-2 border w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
           >
             <option value="">Select vehicle</option>
-            {/* Add options for vehicles */}
+            {vehicleModels.map((model, index) => (
+              <option key={index} value={model}>
+                {model}
+              </option>
+            ))}
           </select>
         </div>
       </div>
