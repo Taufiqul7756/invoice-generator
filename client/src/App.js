@@ -19,7 +19,7 @@ function App() {
         {/* Form Section */}
         <div className="flex flex-col md:flex-row ">
           {/* Left Section */}
-          <div className="flex-grow">
+          <div className="flex-grow mb-10">
             <div className="grid gap-6 px-5">
               <h2 className="font-bold border-b-2 border-indigo-200 pb-2">
                 Reservation Details
@@ -53,7 +53,7 @@ function App() {
             </div>
           </div>
           {/* Right Section */}
-          <div className="flex-grow mt-6 md:mt-0 px-2">
+          <div className="flex-grow mt-6 md:mt-0 px-2 ">
             <h2 className="font-bold border-b-2 border-indigo-200 pb-2">
               Charges Summary
             </h2>

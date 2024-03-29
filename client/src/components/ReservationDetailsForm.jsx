@@ -55,31 +55,33 @@ const ReservationDetailsForm = () => {
         </div>
         {/* Pickup Date */}
         <div>
-          <label htmlFor="pickupDate" className="block text-sm font-medium">
+          <label htmlFor="pickupDateTime" className="block text-sm font-medium">
             Pickup Date <span className="text-red-500">*</span>
           </label>
           <input
-            type="date"
+            type="datetime-local"
             id="pickupDate"
             name="pickupDate"
             value={pickupDate}
             onChange={handlePickupDateChange}
             className="mt-1 p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-200"
+            placeholder="Select date and time"
           />
         </div>
 
         {/* Return Date */}
         <div>
-          <label htmlFor="returnDate" className="block text-sm font-medium">
+          <label htmlFor="returnDateTime" className="block text-sm font-medium">
             Return Date <span className="text-red-500">*</span>
           </label>
           <input
-            type="date"
+            type="datetime-local"
             id="returnDate"
             name="returnDate"
             value={returnDate}
             onChange={handleReturnDateChange}
             className="mt-1 p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-200"
+            placeholder="Select date and time"
           />
         </div>
 
