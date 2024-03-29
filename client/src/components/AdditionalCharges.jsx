@@ -1,20 +1,14 @@
 // AdditionalCharges.js
+import React from "react";
 
-import React, { useState } from "react";
-
-const AdditionalCharges = () => {
-  // State variables to track whether each additional charge is selected
-  const [collisionDamageWaiver, setCollisionDamageWaiver] = useState(false);
-  const [liabilityInsurance, setLiabilityInsurance] = useState(false);
-  const [rentalTax, setRentalTax] = useState(false);
-
+const AdditionalCharges = ({ additionalCharges, onCheckboxChange }) => {
   // Function to calculate total additional charges based on selected options
   const calculateTotalAdditionalCharges = () => {
     let total = 0;
-    if (collisionDamageWaiver) total += 9;
-    if (liabilityInsurance) total += 15;
+    if (additionalCharges.collisionDamageWaiver) total += 9;
+    if (additionalCharges.liabilityInsurance) total += 15;
     // Calculate rental tax (11.5% of total charges excluding rental tax itself)
-    if (rentalTax) total += total * 0.115;
+    if (additionalCharges.rentalTax) total += total * 0.115;
     return total.toFixed(2);
   };
 
@@ -28,8 +22,8 @@ const AdditionalCharges = () => {
             id="collisionDamageWaiver"
             name="collisionDamageWaiver"
             className="h-4 w-4 text-blue-500 focus:ring-blue-400 border-gray-300 rounded"
-            checked={collisionDamageWaiver}
-            onChange={() => setCollisionDamageWaiver(!collisionDamageWaiver)}
+            checked={additionalCharges.collisionDamageWaiver}
+            onChange={(e) => onCheckboxChange(e.target.name, e.target.checked)}
           />
           <label
             htmlFor="collisionDamageWaiver"
@@ -45,8 +39,8 @@ const AdditionalCharges = () => {
             id="liabilityInsurance"
             name="liabilityInsurance"
             className="h-4 w-4 text-blue-500 focus:ring-blue-400 border-gray-300 rounded"
-            checked={liabilityInsurance}
-            onChange={() => setLiabilityInsurance(!liabilityInsurance)}
+            checked={additionalCharges.liabilityInsurance}
+            onChange={(e) => onCheckboxChange(e.target.name, e.target.checked)}
           />
           <label
             htmlFor="liabilityInsurance"
@@ -62,8 +56,8 @@ const AdditionalCharges = () => {
             id="rentalTax"
             name="rentalTax"
             className="h-4 w-4 text-blue-500 focus:ring-blue-400 border-gray-300 rounded"
-            checked={rentalTax}
-            onChange={() => setRentalTax(!rentalTax)}
+            checked={additionalCharges.rentalTax}
+            onChange={(e) => onCheckboxChange(e.target.name, e.target.checked)}
           />
           <label
             htmlFor="rentalTax"

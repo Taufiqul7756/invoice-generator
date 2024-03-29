@@ -11,7 +11,9 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [reservationDuration, setReservationDuration] = useState("");
 
-  const [selectedVehicleType, setSelectedVehicleType] = useState(""); // State to store selected vehicle type
+  const [selectedVehicleType, setSelectedVehicleType] = useState("");
+  const [selectedVehicleId, setSelectedVehicleId] = useState("");
+
   const [filteredVehicles, setFilteredVehicles] = useState([]);
 
   const [customerData, setCustomerData] = useState({
@@ -20,11 +22,16 @@ function App() {
     email: "",
     phone: "",
   });
-  console.log("customerData from App.js:", customerData);
+  const [additionalCharges, setAdditionalCharges] = useState({
+    collisionDamageWaiver: false,
+    liabilityInsurance: false,
+    rentalTax: false,
+  });
+  // console.log("selectedVehicleId from app.js :", selectedVehicleId);
+  // console.log("additionalCharges from App.js:", additionalCharges);
+  // console.log("customerData from App.js:", customerData);
   console.log("reservationDuration from App.js: ", reservationDuration);
-  console.log("child2 from App.js: ", selectedVehicleType, filteredVehicles);
-
-  console.log("carsList:", carsList);
+  // console.log("child2 from App.js: ", selectedVehicleType, filteredVehicles);
 
   useEffect(() => {
     fetch("https://exam-server-7c41747804bf.herokuapp.com/carsList")
@@ -44,13 +51,22 @@ function App() {
   };
 
   // Callback function to receive selected vehicle type and filtered vehicles from child component
-  const handleVehicleSelection = (type, vehicles) => {
+  const handleVehicleSelection = (type, vehicles, id) => {
     setSelectedVehicleType(type);
     setFilteredVehicles(vehicles);
+    setSelectedVehicleId(id);
   };
 
   const handleInputChange = (data) => {
     setCustomerData(data);
+  };
+
+  // Function to handle checkbox state changes
+  const handleCheckboxChange = (name, value) => {
+    setAdditionalCharges({
+      ...additionalCharges,
+      [name]: value,
+    });
   };
   return (
     <div className="lg:p-16 sm:p-5 md:p-5 bg-slate-200">
@@ -99,7 +115,10 @@ function App() {
                 Additional Charges
               </h2>
               <div className="grid gap-4 rounded-md border-solid border-2 border-indigo-200 p-4">
-                <AdditionalCharges />
+                <AdditionalCharges
+                  additionalCharges={additionalCharges}
+                  onCheckboxChange={handleCheckboxChange}
+                />
               </div>
             </div>
           </div>
@@ -109,7 +128,15 @@ function App() {
               Charges Summary
             </h2>
             <div className="rounded-md border-solid border-2 border-indigo-200 p-4 mt-4">
-              <ChargesSummary />
+              <ChargesSummary
+                customerData={customerData}
+                reservationDuration={reservationDuration}
+                selectedVehicleType={selectedVehicleType}
+                filteredVehicles={filteredVehicles}
+                additionalCharges={additionalCharges}
+                selectedVehicleId={selectedVehicleId}
+                carsList={carsList}
+              />
             </div>
           </div>
         </div>

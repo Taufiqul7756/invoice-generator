@@ -27,16 +27,18 @@ const ReservationDetailsForm = ({ onDurationChange }) => {
       const durationInDays = Math.ceil(timeDifference / (1000 * 3600 * 24));
       const weeks = Math.floor(durationInDays / 7);
       const remainingDays = durationInDays % 7;
-      setDuration(
-        `${weeks > 0 ? weeks + " week" + (weeks > 1 ? "s" : "") : ""} ${
-          remainingDays > 0
-            ? remainingDays + " day" + (remainingDays > 1 ? "s" : "")
-            : ""
-        }`
-      );
+      const newDuration = `${
+        weeks > 0 ? weeks + " week" + (weeks > 1 ? "s" : "") : ""
+      } ${
+        remainingDays > 0
+          ? remainingDays + " day" + (remainingDays > 1 ? "s" : "")
+          : ""
+      }`;
 
       // Call the callback function with the duration
-      onDurationChange(duration);
+      onDurationChange(newDuration);
+      // Update the duration state
+      setDuration(newDuration);
     }
   };
   return (

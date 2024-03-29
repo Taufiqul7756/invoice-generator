@@ -9,7 +9,7 @@ const CustomerDetails = ({ onInputChange }) => {
     phone: "",
   });
 
-  console.log("formData form customer details child:", formData);
+  // console.log("formData form customer details child:", formData);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;

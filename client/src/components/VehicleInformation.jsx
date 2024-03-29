@@ -2,26 +2,42 @@ import React, { useState } from "react";
 
 const VehicleInformation = ({ carsList, onVehicleSelection }) => {
   const [selectedType, setSelectedType] = useState("");
-  const [selectedVehicle, setSelectedVehicle] = useState("");
+  const [selectedModel, setSelectedModel] = useState("");
+  const [selectedCarId, setSelectedCarId] = useState("");
 
-  console.log("selectedType:", selectedType);
-  console.log("selectedVehicle:", selectedVehicle);
+  // console.log("selectedType:", selectedType);
+  // console.log("selectedModel:", selectedModel);
+  // console.log("selectedCarId:", selectedCarId);
 
   // Update filtered vehicles when the selected type changes
   React.useEffect(() => {
-    // Reset selected vehicle when type changes
-    setSelectedVehicle("");
+    // Reset selected model and car ID when type changes
+    setSelectedModel("");
+    setSelectedCarId("");
   }, [selectedType]);
 
   // Get unique vehicle types
   const uniqueTypes = [...new Set(carsList.map((car) => car.type))];
 
-  // Handle change in vehicle selection
-  const handleVehicleSelection = (e) => {
-    const selectedModel = e.target.value;
-    setSelectedVehicle(selectedModel);
-    // Call callback function with selected type and model
-    onVehicleSelection(selectedType, selectedModel);
+  // Handle change in vehicle type selection
+  const handleTypeSelection = (e) => {
+    const type = e.target.value;
+    setSelectedType(type);
+    // Call callback function with selected type, model, and car ID
+    onVehicleSelection(type, "", "");
+  };
+
+  // Handle change in vehicle model selection
+  const handleModelSelection = (e) => {
+    const model = e.target.value;
+    setSelectedModel(model);
+    // Find the corresponding car ID based on the selected type and model
+    const carId = carsList.find(
+      (car) => car.type === selectedType && car.model === model
+    )?.id;
+    setSelectedCarId(carId || "");
+    // Call callback function with selected type, model, and car ID
+    onVehicleSelection(selectedType, model, carId);
   };
 
   return (
@@ -36,7 +52,7 @@ const VehicleInformation = ({ carsList, onVehicleSelection }) => {
             id="vehicleType"
             name="vehicleType"
             className="mt-1 p-2 border w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
-            onChange={(e) => setSelectedType(e.target.value)}
+            onChange={handleTypeSelection}
             value={selectedType}
           >
             <option value="">Select vehicle type</option>
@@ -56,8 +72,8 @@ const VehicleInformation = ({ carsList, onVehicleSelection }) => {
             id="vehicle"
             name="vehicle"
             className="mt-1 p-2 border w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
-            onChange={handleVehicleSelection}
-            value={selectedVehicle}
+            onChange={handleModelSelection}
+            value={selectedModel}
           >
             <option value="">Select vehicle</option>
             {carsList
