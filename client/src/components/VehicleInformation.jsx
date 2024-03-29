@@ -1,21 +1,28 @@
 import React, { useState } from "react";
 
-const VehicleInformation = ({ carsList }) => {
+const VehicleInformation = ({ carsList, onVehicleSelection }) => {
   const [selectedType, setSelectedType] = useState("");
-  const [filteredVehicles, setFilteredVehicles] = useState([]);
+  const [selectedVehicle, setSelectedVehicle] = useState("");
+
+  console.log("selectedType:", selectedType);
+  console.log("selectedVehicle:", selectedVehicle);
 
   // Update filtered vehicles when the selected type changes
   React.useEffect(() => {
-    if (selectedType) {
-      const filtered = carsList.filter((car) => car.type === selectedType);
-      setFilteredVehicles(filtered);
-    } else {
-      setFilteredVehicles([]);
-    }
-  }, [selectedType, carsList]);
+    // Reset selected vehicle when type changes
+    setSelectedVehicle("");
+  }, [selectedType]);
 
   // Get unique vehicle types
   const uniqueTypes = [...new Set(carsList.map((car) => car.type))];
+
+  // Handle change in vehicle selection
+  const handleVehicleSelection = (e) => {
+    const selectedModel = e.target.value;
+    setSelectedVehicle(selectedModel);
+    // Call callback function with selected type and model
+    onVehicleSelection(selectedType, selectedModel);
+  };
 
   return (
     <div>
@@ -49,13 +56,17 @@ const VehicleInformation = ({ carsList }) => {
             id="vehicle"
             name="vehicle"
             className="mt-1 p-2 border w-full border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
+            onChange={handleVehicleSelection}
+            value={selectedVehicle}
           >
             <option value="">Select vehicle</option>
-            {filteredVehicles.map((car, index) => (
-              <option key={index} value={car.model}>
-                {car.model}
-              </option>
-            ))}
+            {carsList
+              .filter((car) => car.type === selectedType)
+              .map((car, index) => (
+                <option key={index} value={car.model}>
+                  {car.model}
+                </option>
+              ))}
           </select>
         </div>
       </div>

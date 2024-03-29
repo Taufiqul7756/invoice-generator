@@ -9,6 +9,13 @@ import "./index.css";
 function App() {
   const [carsList, setCarsList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [reservationDuration, setReservationDuration] = useState("");
+
+  const [selectedVehicleType, setSelectedVehicleType] = useState(""); // State to store selected vehicle type
+  const [filteredVehicles, setFilteredVehicles] = useState([]); //
+
+  console.log("reservationDuration from App.js: ", reservationDuration);
+  console.log("child2 from App.js: ", selectedVehicleType, filteredVehicles);
 
   console.log("carsList:", carsList);
 
@@ -24,8 +31,18 @@ function App() {
         setLoading(false);
       });
   }, []);
+  // Callback function to receive duration from child component
+  const handleDurationChange = (duration) => {
+    setReservationDuration(duration);
+  };
+
+  // Callback function to receive selected vehicle type and filtered vehicles from child component
+  const handleVehicleSelection = (type, vehicles) => {
+    setSelectedVehicleType(type);
+    setFilteredVehicles(vehicles);
+  };
   return (
-    <div className="lg:p-20 sm:p-5 md:p-5 bg-slate-200">
+    <div className="lg:p-16 sm:p-5 md:p-5 bg-slate-200">
       <div className="bg-white">
         {/* navbar */}
         <div className="flex justify-between items-center py-4 px-4 sm:py-10 sm:px-10">
@@ -43,13 +60,18 @@ function App() {
                 Reservation Details
               </h2>
               <div className="grid gap-4 rounded-md border-solid border-2 border-indigo-200 p-4">
-                <ReservationDetailsForm />
+                <ReservationDetailsForm
+                  onDurationChange={handleDurationChange}
+                />
               </div>
               <h2 className="font-bold border-b-2 border-indigo-200 pb-2">
                 Vehicle Information
               </h2>
               <div className="grid gap-4 rounded-md border-solid border-2 border-indigo-200 p-4">
-                <VehicleInformation carsList={carsList} />
+                <VehicleInformation
+                  carsList={carsList}
+                  onVehicleSelection={handleVehicleSelection}
+                />
               </div>
             </div>
           </div>

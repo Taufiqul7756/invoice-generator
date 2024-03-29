@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 
-const ReservationDetailsForm = () => {
+const ReservationDetailsForm = ({ onDurationChange }) => {
   const [pickupDate, setPickupDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [duration, setDuration] = useState("");
+
+  console.log("duration from child", duration);
 
   // Function to handle changes in the pickup date input
   const handlePickupDateChange = (event) => {
@@ -32,6 +34,9 @@ const ReservationDetailsForm = () => {
             : ""
         }`
       );
+
+      // Call the callback function with the duration
+      onDurationChange(duration);
     }
   };
   return (
