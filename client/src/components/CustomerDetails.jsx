@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 
@@ -63,13 +64,16 @@ const CustomerDetails = ({ onInputChange, onUserChange }) => {
 
   const postData = async () => {
     try {
-      const response = await fetch("http://localhost:5000/user", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "https://invoice-generator-api-git-main-taufiqul-islams-projects.vercel.app/user",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       if (response.ok) {
         const responseData = await response.json();
         const { token } = responseData;

@@ -84,20 +84,23 @@ const ChargesSummary = ({
   // Function to handle sending data to the backend
   const sendDataToBackend = async () => {
     try {
-      const response = await fetch("http://localhost:5000/summary", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToSend),
-      });
+      const response = await fetch(
+        "https://invoice-generator-api-git-main-taufiqul-islams-projects.vercel.app/summary",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataToSend),
+        }
+      );
       if (response.ok) {
-        console.log("Data sent successfully");
+        console.log("Data sent successfully @@@@@");
       } else {
-        console.error("Failed to send data");
+        console.error("Failed to send data @@@@");
       }
     } catch (error) {
-      console.error("Error sending data:", error);
+      console.error("Error sending data @@@@:", error);
     }
   };
 
