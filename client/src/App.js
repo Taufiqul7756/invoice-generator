@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState, useRef } from "react";
 import AdditionalCharges from "./components/AdditionalCharges";
 import ChargesSummary from "./components/ChargesSummary";
 import CustomerDetails from "./components/CustomerDetails";
 import ReservationDetailsForm from "./components/ReservationDetailsForm";
 import VehicleInformation from "./components/VehicleInformation";
 import "./index.css";
+import Print from "./components/print/Print.jsx";
+import { useReactToPrint } from "react-to-print";
 
 function App() {
+  const printRef = useRef();
   const [carsList, setCarsList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [reservationDuration, setReservationDuration] = useState("");
@@ -102,6 +106,10 @@ function App() {
     setReservationId(newReservationId);
   };
 
+  const handlePrint = useReactToPrint({
+    content: () => printRef.current,
+  });
+
   return (
     <div className="lg:p-16 sm:p-5 md:p-5 bg-slate-200">
       <div className="bg-white">
@@ -122,9 +130,17 @@ function App() {
               Remove
             </button>
           )}
-          <button className="border rounded-md bg-blue-500 py-2 px-2 text-white font-md hover:bg-black">
+
+          <button
+            onClick={handlePrint}
+            className="border rounded-md bg-blue-500 py-2 px-2 text-white font-md hover:bg-black"
+          >
             Print / Download
           </button>
+
+          <div ref={printRef} className="WMessage">
+            <Print />
+          </div>
         </div>
         {/* Form Section */}
         <div className="flex flex-col md:flex-row ">
