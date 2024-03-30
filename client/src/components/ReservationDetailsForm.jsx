@@ -16,7 +16,7 @@ const ReservationDetailsForm = ({
   // Calculate reservationId whenever currentUser changes
   useEffect(() => {
     if (currentUser) {
-      const newReservationId = currentUser.firstName + "_" + currentUser._id;
+      const newReservationId = currentUser.lastName + "_" + currentUser._id;
       setReservationId(newReservationId);
       // Send reservationId to App.js
       onReservationIdChange(newReservationId);
