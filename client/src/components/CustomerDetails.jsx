@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 
-const CustomerDetails = ({ onInputChange }) => {
+const CustomerDetails = ({ onInputChange, onUserChange }) => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -14,8 +14,8 @@ const CustomerDetails = ({ onInputChange }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [token, setToken] = useState(null);
 
-  console.log("token :", token);
-  console.log("currentUser :", currentUser);
+  // console.log("token :", token);
+  console.log("currentUser from CustomerDetails :", currentUser);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -80,6 +80,7 @@ const CustomerDetails = ({ onInputChange }) => {
           // Decode the token to get user details
           const decodedToken = jwtDecode(token);
           setCurrentUser(decodedToken.user);
+          onUserChange(decodedToken.user); // Pass currentUser to parent component
         }
         console.log("User data saved successfully");
       } else {

@@ -15,7 +15,11 @@ function App() {
 
   const [selectedVehicleType, setSelectedVehicleType] = useState("");
   const [selectedVehicleId, setSelectedVehicleId] = useState("");
-
+  const [currentUser, setCurrentUser] = useState(() => {
+    // Initialize currentUser from local storage or default to null
+    const storedUser = localStorage.getItem("currentUser");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
   const [filteredVehicles, setFilteredVehicles] = useState([]);
 
   const [customerData, setCustomerData] = useState({
@@ -24,6 +28,7 @@ function App() {
     email: "",
     phone: "",
   });
+
   const [additionalCharges, setAdditionalCharges] = useState({
     collisionDamageWaiver: false,
     liabilityInsurance: false,
@@ -34,6 +39,7 @@ function App() {
   // console.log("customerData from App.js:", customerData);
   // console.log("reservationDuration from App.js: ", reservationDuration);
   // console.log("child2 from App.js: ", selectedVehicleType, filteredVehicles);
+  console.log("currentUser from app:", currentUser);
 
   useEffect(() => {
     fetch("https://exam-server-7c41747804bf.herokuapp.com/carsList")
@@ -47,6 +53,11 @@ function App() {
         setLoading(false);
       });
   }, []);
+
+  useEffect(() => {
+    // Update local storage when currentUser changes
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+  }, [currentUser]);
   // Callback function to receive duration from child component
   const handleDurationChange = (duration, remainingDays, weeks) => {
     setReservationDuration(duration);
@@ -65,6 +76,10 @@ function App() {
     setCustomerData(data);
   };
 
+  const handleUserChange = (user) => {
+    setCurrentUser(user);
+  };
+
   // Function to handle checkbox state changes
   const handleCheckboxChange = (name, value) => {
     setAdditionalCharges({
@@ -78,6 +93,10 @@ function App() {
         {/* navbar */}
         <div className="flex justify-between items-center py-4 px-4 sm:py-10 sm:px-10">
           <h1 className="font-bold text-2xl">Reservation</h1>
+          <span>
+            You are logged in as:{" "}
+            <span className="text-green-500">{currentUser.firstName}</span>
+          </span>
           <button className="border rounded-md bg-blue-500 py-2 px-2 text-white font-md hover:bg-black">
             Print / Download
           </button>
@@ -113,7 +132,10 @@ function App() {
                 Customer Information
               </h2>
               <div className="grid gap-4 rounded-md border-solid border-2 border-indigo-200 p-4">
-                <CustomerDetails onInputChange={handleInputChange} />
+                <CustomerDetails
+                  onInputChange={handleInputChange}
+                  onUserChange={handleUserChange}
+                />
               </div>
               <h2 className="font-bold border-b-2 border-indigo-200 pb-2">
                 Additional Charges
