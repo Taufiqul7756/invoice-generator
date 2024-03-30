@@ -9,7 +9,7 @@ import "./index.css";
 import Print from "./components/print/Print.jsx";
 import { useReactToPrint } from "react-to-print";
 
-function App() {
+const App = () => {
   const printRef = useRef();
   const [carsList, setCarsList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -216,6 +216,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;
