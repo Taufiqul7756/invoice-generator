@@ -10,6 +10,7 @@ const ChargesSummary = ({
   carsList,
   reservationWeeks,
   reservationRemainingDays,
+  currentUser,
 }) => {
   console.log("reservationDuration:", reservationDuration);
   console.log("additionalCharges:", additionalCharges);
@@ -24,6 +25,7 @@ const ChargesSummary = ({
     reservationRemainingDays
   );
   console.log("reservationWeeks from summary: ", reservationWeeks);
+  console.log("currentUser from Summary :", currentUser);
   useEffect(() => {
     if (selectedVehicleId && carsList) {
       const vehicle = carsList.find((car) => car.id === selectedVehicleId);
@@ -66,6 +68,9 @@ const ChargesSummary = ({
     selectedVehicleType,
     selectedVehicleId,
     totalCharges,
+    currentUser,
+    Days,
+    Weeks,
   };
 
   console.log("dataToSend:", dataToSend);

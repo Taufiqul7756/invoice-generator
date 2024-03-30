@@ -164,6 +164,7 @@ function App() {
                 carsList={carsList}
                 reservationWeeks={reservationWeeks}
                 reservationRemainingDays={reservationRemainingDays}
+                currentUser={currentUser}
               />
             </div>
           </div>
