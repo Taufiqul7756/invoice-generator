@@ -10,6 +10,8 @@ function App() {
   const [carsList, setCarsList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [reservationDuration, setReservationDuration] = useState("");
+  const [reservationRemainingDays, setReservationRemainingDays] = useState("");
+  const [reservationWeeks, setReservationWeeks] = useState("");
 
   const [selectedVehicleType, setSelectedVehicleType] = useState("");
   const [selectedVehicleId, setSelectedVehicleId] = useState("");
@@ -46,8 +48,10 @@ function App() {
       });
   }, []);
   // Callback function to receive duration from child component
-  const handleDurationChange = (duration) => {
+  const handleDurationChange = (duration, remainingDays, weeks) => {
     setReservationDuration(duration);
+    setReservationRemainingDays(remainingDays);
+    setReservationWeeks(weeks);
   };
 
   // Callback function to receive selected vehicle type and filtered vehicles from child component
@@ -136,6 +140,8 @@ function App() {
                 additionalCharges={additionalCharges}
                 selectedVehicleId={selectedVehicleId}
                 carsList={carsList}
+                reservationWeeks={reservationWeeks}
+                reservationRemainingDays={reservationRemainingDays}
               />
             </div>
           </div>

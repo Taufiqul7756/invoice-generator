@@ -34,9 +34,11 @@ const ReservationDetailsForm = ({ onDurationChange }) => {
           ? remainingDays + " day" + (remainingDays > 1 ? "s" : "")
           : ""
       }`;
+      console.log("weeks from reservation", weeks);
+      console.log("remainingDays from reservation", remainingDays);
 
       // Call the callback function with the duration
-      onDurationChange(newDuration);
+      onDurationChange(newDuration, remainingDays, weeks);
       // Update the duration state
       setDuration(newDuration);
     }

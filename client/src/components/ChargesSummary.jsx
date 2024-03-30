@@ -8,11 +8,19 @@ const ChargesSummary = ({
   additionalCharges,
   selectedVehicleId,
   carsList,
+  reservationWeeks,
+  reservationRemainingDays,
 }) => {
+  console.log("reservationDuration:", reservationDuration);
   const [dailyCharge, setDailyCharge] = useState(0);
   const [weeklyCharge, setWeeklyCharge] = useState(0);
   const [totalCharges, setTotalCharges] = useState(0);
 
+  console.log(
+    "reservationRemainingDays from summary: ",
+    reservationRemainingDays
+  );
+  console.log("reservationWeeks from summary: ", reservationWeeks);
   useEffect(() => {
     if (selectedVehicleId && carsList) {
       const vehicle = carsList.find((car) => car.id === selectedVehicleId);
@@ -23,18 +31,11 @@ const ChargesSummary = ({
     }
   }, [selectedVehicleId, carsList]);
 
-  const regex = /(\d+)\s+weeks?\s*(\d+)\s+days?/;
-  const match = reservationDuration.match(regex);
+  let Days = reservationRemainingDays || 0;
+  let Weeks = reservationWeeks || 0;
 
-  let weeks = 0;
-  let days = 0;
-  if (match) {
-    weeks = parseInt(match[1]) || 0;
-    days = parseInt(match[2]) || 0;
-  }
-
-  const totalDaily = dailyCharge * days;
-  const totalWeekly = weeklyCharge * weeks;
+  const totalDaily = dailyCharge * Days;
+  const totalWeekly = weeklyCharge * Weeks;
   const total = totalDaily + totalWeekly;
 
   useEffect(() => {
@@ -66,13 +67,13 @@ const ChargesSummary = ({
         <tbody>
           <tr>
             <td className="border px-4 py-2">Daily</td>
-            <td className="border px-4 py-2">{days}</td>
+            <td className="border px-4 py-2">{Days}</td>
             <td className="border px-4 py-2">${dailyCharge.toFixed(2)}</td>
             <td className="border px-4 py-2">${totalDaily.toFixed(2)}</td>
           </tr>
           <tr>
             <td className="border px-4 py-2">Weekly</td>
-            <td className="border px-4 py-2">{weeks}</td>
+            <td className="border px-4 py-2">{Weeks}</td>
             <td className="border px-4 py-2">${weeklyCharge.toFixed(2)}</td>
             <td className="border px-4 py-2">${totalWeekly.toFixed(2)}</td>
           </tr>
