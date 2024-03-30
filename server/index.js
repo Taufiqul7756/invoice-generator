@@ -5,13 +5,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const app = express();
-app.use();
-
-// cors({
-//   origin: "",
-//   methods: ["POST", "GET"],
-//   credentials: true,
-// })
+app.use(cors());
 app.use(express.json());
 
 // Schema Data
