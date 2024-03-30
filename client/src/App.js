@@ -21,6 +21,7 @@ function App() {
     return storedUser ? JSON.parse(storedUser) : null;
   });
   const [filteredVehicles, setFilteredVehicles] = useState([]);
+  const [reservationId, setReservationId] = useState("");
 
   const [customerData, setCustomerData] = useState({
     firstName: "",
@@ -34,12 +35,6 @@ function App() {
     liabilityInsurance: false,
     rentalTax: false,
   });
-  // console.log("selectedVehicleId from app.js :", selectedVehicleId);
-  // console.log("additionalCharges from App.js:", additionalCharges);
-  // console.log("customerData from App.js:", customerData);
-  // console.log("reservationDuration from App.js: ", reservationDuration);
-  // console.log("child2 from App.js: ", selectedVehicleType, filteredVehicles);
-  console.log("currentUser from app:", currentUser);
 
   useEffect(() => {
     fetch("https://exam-server-7c41747804bf.herokuapp.com/carsList")
@@ -58,6 +53,7 @@ function App() {
     // Update local storage when currentUser changes
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
   }, [currentUser]);
+
   // Callback function to receive duration from child component
   const handleDurationChange = (duration, remainingDays, weeks) => {
     setReservationDuration(duration);
@@ -87,6 +83,25 @@ function App() {
       [name]: value,
     });
   };
+
+  // remove token from local storage and reload page
+  const handleRemoveToken = () => {
+    localStorage.removeItem("currentUser");
+    localStorage.removeItem("token");
+    window.location.reload();
+  };
+  useEffect(() => {
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+
+    if (!currentUser) {
+      setReservationId("");
+    }
+  }, [currentUser]);
+
+  const handleReservationIdChange = (newReservationId) => {
+    setReservationId(newReservationId);
+  };
+
   return (
     <div className="lg:p-16 sm:p-5 md:p-5 bg-slate-200">
       <div className="bg-white">
@@ -95,8 +110,18 @@ function App() {
           <h1 className="font-bold text-2xl">Reservation</h1>
           <span>
             You are logged in as:{" "}
-            <span className="text-green-500">{currentUser.firstName}</span>
+            <span className="text-green-500">
+              {currentUser ? currentUser.firstName : ""}
+            </span>
           </span>
+          {currentUser && (
+            <button
+              onClick={handleRemoveToken}
+              className="ml-4 border rounded-md bg-gray-500 py-2 px-2 text-red-500 font-lg hover:bg-black"
+            >
+              Remove
+            </button>
+          )}
           <button className="border rounded-md bg-blue-500 py-2 px-2 text-white font-md hover:bg-black">
             Print / Download
           </button>
@@ -112,6 +137,8 @@ function App() {
               <div className="grid gap-4 rounded-md border-solid border-2 border-indigo-200 p-4">
                 <ReservationDetailsForm
                   onDurationChange={handleDurationChange}
+                  currentUser={currentUser}
+                  onReservationIdChange={handleReservationIdChange}
                 />
               </div>
               <h2 className="font-bold border-b-2 border-indigo-200 pb-2">
@@ -165,6 +192,7 @@ function App() {
                 reservationWeeks={reservationWeeks}
                 reservationRemainingDays={reservationRemainingDays}
                 currentUser={currentUser}
+                reservationId={reservationId}
               />
             </div>
           </div>

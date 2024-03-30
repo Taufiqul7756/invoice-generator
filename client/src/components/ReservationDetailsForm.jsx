@@ -1,9 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const ReservationDetailsForm = ({ onDurationChange }) => {
+const ReservationDetailsForm = ({
+  onDurationChange,
+  currentUser,
+  onReservationIdChange,
+}) => {
   const [pickupDate, setPickupDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [duration, setDuration] = useState("");
+  const [reservationId, setReservationId] = useState("");
+
+  console.log("currentUser from reservation", currentUser);
+  console.log("reservationId: ", reservationId);
+
+  // Calculate reservationId whenever currentUser changes
+  useEffect(() => {
+    if (currentUser) {
+      const newReservationId = currentUser.firstName + "_" + currentUser._id;
+      setReservationId(newReservationId);
+      // Send reservationId to App.js
+      onReservationIdChange(newReservationId);
+    }
+  }, [currentUser, onReservationIdChange]);
 
   // console.log("duration from child", duration);
 
@@ -56,8 +74,9 @@ const ReservationDetailsForm = ({ onDurationChange }) => {
             type="text"
             id="reservationId"
             name="reservationId"
+            readOnly
+            value={reservationId}
             className="mt-1 p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring focus:ring-blue-200"
-            placeholder="Enter reservation ID"
           />
         </div>
         {/* Pickup Date */}

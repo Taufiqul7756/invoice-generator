@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 
 const ChargesSummary = ({
@@ -11,8 +12,10 @@ const ChargesSummary = ({
   reservationWeeks,
   reservationRemainingDays,
   currentUser,
+  reservationId,
 }) => {
   console.log("reservationDuration:", reservationDuration);
+  console.log("filteredVehicles:", filteredVehicles);
   console.log("additionalCharges:", additionalCharges);
   const [dailyCharge, setDailyCharge] = useState(0);
   const [weeklyCharge, setWeeklyCharge] = useState(0);
@@ -64,16 +67,69 @@ const ChargesSummary = ({
   const dataToSend = {
     reservationDuration,
     additionalCharges,
-    filteredVehicles,
     selectedVehicleType,
     selectedVehicleId,
     totalCharges,
-    currentUser,
+    currentUser: {
+      ...currentUser,
+      userId: currentUser?._id,
+    },
     Days,
     Weeks,
+    reservationId,
   };
 
   console.log("dataToSend:", dataToSend);
+
+  // Function to handle sending data to the backend
+  const sendDataToBackend = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/summary", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
+      });
+      if (response.ok) {
+        console.log("Data sent successfully");
+      } else {
+        console.error("Failed to send data");
+      }
+    } catch (error) {
+      console.error("Error sending data:", error);
+    }
+  };
+
+  // useEffect hook to send data when the component mounts
+  useEffect(() => {
+    // Check if all required fields are filled before sending data
+    if (
+      reservationDuration &&
+      selectedVehicleType &&
+      filteredVehicles &&
+      additionalCharges &&
+      selectedVehicleId &&
+      carsList &&
+      reservationWeeks &&
+      reservationRemainingDays &&
+      // currentUser &&
+      reservationId
+    ) {
+      sendDataToBackend();
+    }
+  }, [
+    reservationDuration,
+    selectedVehicleType,
+    filteredVehicles,
+    additionalCharges,
+    selectedVehicleId,
+    carsList,
+    reservationWeeks,
+    reservationRemainingDays,
+    // currentUser,
+    reservationId,
+  ]);
 
   return (
     <div className="mt-4">
