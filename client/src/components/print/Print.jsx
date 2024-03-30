@@ -4,7 +4,7 @@ const Print = () => {
   return (
     <div>
       <div>
-        <h1 className="text-white">Hellooooo, this is printer</h1>
+        <h1 className="text-white">.</h1>
       </div>
     </div>
   );
