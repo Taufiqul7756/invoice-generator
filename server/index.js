@@ -21,7 +21,33 @@ const schemaData = mongoose.Schema(
   }
 );
 
+// Define Summary Schema
+const summarySchema = mongoose.Schema(
+  {
+    additionalCharges: {
+      type: Object,
+      default: {},
+    },
+    filteredVehicles: String,
+    selectedVehicleType: String,
+    selectedVehicleId: String,
+    reservationDuration: String,
+    totalCharges: Number,
+    currentUser: {
+      type: Object,
+      default: {},
+    },
+    Days: Number,
+    Weeks: Number,
+    reservationId: String,
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const userModel = mongoose.model("user", schemaData);
+const summaryModel = mongoose.model("summary", summarySchema);
 
 app.get("/getUser", async (req, res) => {
   const data = await userModel.find({});
@@ -56,6 +82,40 @@ app.post("/user", async (req, res) => {
   } catch (error) {
     console.error("Error saving user data:", error);
     res.status(500).json({ success: false, message: "Error saving user data" });
+  }
+});
+
+// Route to save summary data
+app.post("/summary", async (req, res) => {
+  try {
+    const summaryData = req.body;
+    const newSummary = new summaryModel(summaryData);
+    await newSummary.save();
+
+    res.send({
+      success: true,
+      message: "Summary data saved successfully",
+    });
+  } catch (error) {
+    console.error("Error saving summary data:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Error saving summary data" });
+  }
+});
+
+// Route to get summary data
+app.get("/getSummary", async (req, res) => {
+  try {
+    // Fetch all summary data from the database
+    const summaryData = await summaryModel.find({});
+
+    res.json({ success: true, data: summaryData });
+  } catch (error) {
+    console.error("Error fetching summary data:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Error fetching summary data" });
   }
 });
 
