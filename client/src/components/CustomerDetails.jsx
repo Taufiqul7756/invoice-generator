@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 
 const CustomerDetails = ({ onInputChange }) => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,22 @@ const CustomerDetails = ({ onInputChange }) => {
 
   const [allFieldsFilled, setAllFieldsFilled] = useState(false);
   const [timerId, setTimerId] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [token, setToken] = useState(null);
+
+  console.log("token :", token);
+  console.log("currentUser :", currentUser);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+
+      // Decode the token to get user details
+      const decodedToken = jwtDecode(storedToken);
+      setCurrentUser(decodedToken.user);
+    }
+  }, []);
 
   useEffect(() => {
     // Check if all fields are filled
@@ -56,9 +73,13 @@ const CustomerDetails = ({ onInputChange }) => {
       if (response.ok) {
         const responseData = await response.json();
         const { token } = responseData;
-        console.log("token in client:", token);
         if (token) {
           localStorage.setItem("token", token);
+          setToken(token);
+
+          // Decode the token to get user details
+          const decodedToken = jwtDecode(token);
+          setCurrentUser(decodedToken.user);
         }
         console.log("User data saved successfully");
       } else {
