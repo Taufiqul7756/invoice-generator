@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ChargesSummary = ({
   customerData,
@@ -23,12 +25,6 @@ const ChargesSummary = ({
   const { collisionDamageWaiver, liabilityInsurance, rentalTax } =
     additionalCharges;
 
-  console.log(
-    "reservationRemainingDays from summary: ",
-    reservationRemainingDays
-  );
-  console.log("reservationWeeks from summary: ", reservationWeeks);
-  console.log("currentUser from Summary :", currentUser);
   useEffect(() => {
     if (selectedVehicleId && carsList) {
       const vehicle = carsList.find((car) => car.id === selectedVehicleId);
@@ -79,7 +75,19 @@ const ChargesSummary = ({
     reservationId,
   };
 
-  console.log("dataToSend:", dataToSend);
+  // Function to display success toast
+  const showSuccessToast = () => {
+    toast.success("Data sent successfully!", {
+      position: "top-center",
+    });
+  };
+
+  // Function to display error toast
+  const showErrorToast = () => {
+    toast.error("Failed to send data!", {
+      position: "top-center",
+    });
+  };
 
   // Function to handle sending data to the backend
   const sendDataToBackend = async () => {
@@ -95,12 +103,15 @@ const ChargesSummary = ({
         }
       );
       if (response.ok) {
-        console.log("Data sent successfully @@@@@");
+        console.log("Data sent successfully");
+        showSuccessToast();
       } else {
-        console.error("Failed to send data @@@@");
+        console.error("Failed to send data");
+        showErrorToast();
       }
     } catch (error) {
-      console.error("Error sending data @@@@:", error);
+      console.error("Error sending data:", error);
+      showErrorToast();
     }
   };
 
@@ -202,6 +213,7 @@ const ChargesSummary = ({
           </tr>
         </tbody>
       </table>
+      {/* <ToastContainer /> */}
     </div>
   );
 };

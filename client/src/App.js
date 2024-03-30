@@ -116,20 +116,22 @@ const App = () => {
         {/* navbar */}
         <div className="flex justify-between items-center py-4 px-4 sm:py-10 sm:px-10">
           <h1 className="font-bold text-2xl">Reservation</h1>
-          <span>
-            You are logged in as:{" "}
-            <span className="text-green-500">
-              {currentUser ? currentUser.firstName : ""}
+          <div>
+            <span>
+              You are logged in as:{" "}
+              <span className="text-green-500 font-bold">
+                {currentUser ? currentUser.firstName : ""}
+              </span>
             </span>
-          </span>
-          {currentUser && (
-            <button
-              onClick={handleRemoveToken}
-              className="ml-4 border rounded-md bg-gray-500 py-2 px-2 text-red-500 font-lg hover:bg-black"
-            >
-              Remove
-            </button>
-          )}
+            {currentUser && (
+              <button
+                onClick={handleRemoveToken}
+                className="ml-4 border rounded-md  p-1 text-red-500 font-lg hover:bg-gray-300"
+              >
+                Logout
+              </button>
+            )}
+          </div>
 
           <button
             onClick={handlePrint}
