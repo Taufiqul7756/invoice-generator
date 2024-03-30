@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const app = express();
 app.use(cors());
@@ -30,11 +31,21 @@ app.get("/getUser", async (req, res) => {
 app.post("/user", async (req, res) => {
   try {
     const userData = req.body;
-    const data = new userModel(userData);
-    await data.save();
+    const newUser = new userModel(userData);
+    await newUser.save();
+    const insertedUser = await userModel.findOne({ email: userData.email });
+
+    // Convert the _id from ObjectId to string
+    const modifiedUser = {
+      ...insertedUser.toObject(),
+      _id: insertedUser._id.toString(),
+    };
+    console.log("insertedUser:", modifiedUser);
 
     // Generate JWT token
-    const token = jwt.sign({ user: userData }, "invoice-jwt-key");
+    const token = jwt.sign({ user: modifiedUser }, process.env.JWT_KEY, {
+      expiresIn: "3h",
+    });
     console.log("token for currentUser:", token);
 
     res.send({
@@ -49,9 +60,7 @@ app.post("/user", async (req, res) => {
 });
 
 mongoose
-  .connect(
-    "mongodb+srv://taufiq:taufiq@cluster0.1xwhljj.mongodb.net/invoice-generator"
-  )
+  .connect(process.env.DATABASE_URI)
   .then(() => {
     console.log("Connected to DB");
     app.listen(5000, () => {
