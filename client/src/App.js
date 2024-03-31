@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import AdditionalCharges from "./components/AdditionalCharges";
 import ChargesSummary from "./components/ChargesSummary";
 import CustomerDetails from "./components/CustomerDetails";
@@ -10,7 +10,6 @@ import Print from "./components/print/Print.jsx";
 import { useReactToPrint } from "react-to-print";
 
 const App = () => {
-  const printRef = useRef();
   const [carsList, setCarsList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [reservationDuration, setReservationDuration] = useState("");
@@ -39,6 +38,10 @@ const App = () => {
     liabilityInsurance: false,
     rentalTax: false,
   });
+
+  const [showPopup, setShowPopup] = useState(false);
+
+  console.log("currentUser form APPPPPPPPPPP: ", currentUser);
 
   useEffect(() => {
     fetch("https://exam-server-7c41747804bf.herokuapp.com/carsList")
@@ -106,10 +109,13 @@ const App = () => {
     setReservationId(newReservationId);
   };
 
-  const handlePrint = useReactToPrint({
-    content: () => printRef.current,
-  });
+  const handlePrintButtonClick = () => {
+    setShowPopup(true);
+  };
 
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
   return (
     <div className="lg:p-16 sm:p-5 md:p-5 bg-slate-200">
       <div className="bg-white">
@@ -119,7 +125,7 @@ const App = () => {
           <div>
             <span>
               You are logged in as:{" "}
-              <span className="text-green-500 font-bold">
+              <span className="text-green-500">
                 {currentUser ? currentUser.firstName : ""}
               </span>
             </span>
@@ -134,15 +140,26 @@ const App = () => {
           </div>
 
           <button
-            onClick={handlePrint}
+            onClick={handlePrintButtonClick}
             className="border rounded-md bg-blue-500 py-2 px-2 text-white font-md hover:bg-black"
           >
             Print / Download
           </button>
-
-          <div ref={printRef} className="WMessage">
-            <Print />
-          </div>
+          {/* Popup */}
+          {showPopup && (
+            <div className="fixed p-10 top-0 left-0 w-full h-full flex items-center justify-center z-50">
+              <div className="absolute top-0 left-0 w-full h-full bg-gray-900 opacity-50"></div>
+              <div className="bg-white rounded-lg p-8  relative z-50">
+                <Print currentUser={currentUser} />
+                <button
+                  onClick={handleClosePopup}
+                  className="absolute top-0 right-0 m-4 text-gray-500 hover:text-gray-800"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          )}
         </div>
         {/* Form Section */}
         <div className="flex flex-col md:flex-row ">

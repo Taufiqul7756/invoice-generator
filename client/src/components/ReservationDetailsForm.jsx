@@ -4,6 +4,7 @@ const ReservationDetailsForm = ({
   onDurationChange,
   currentUser,
   onReservationIdChange,
+  reservationDurationFromSummary,
 }) => {
   const [pickupDate, setPickupDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
@@ -12,6 +13,10 @@ const ReservationDetailsForm = ({
 
   console.log("currentUser from reservation", currentUser);
   console.log("reservationId: ", reservationId);
+  console.log(
+    "reservationDurationFromSummary from ---------: ",
+    reservationDurationFromSummary
+  );
 
   // Calculate reservationId whenever currentUser changes
   useEffect(() => {
