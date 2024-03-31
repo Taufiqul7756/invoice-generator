@@ -13,10 +13,6 @@ const ReservationDetailsForm = ({
 
   console.log("currentUser from reservation", currentUser);
   console.log("reservationId: ", reservationId);
-  console.log(
-    "reservationDurationFromSummary from ---------: ",
-    reservationDurationFromSummary
-  );
 
   // Calculate reservationId whenever currentUser changes
   useEffect(() => {
